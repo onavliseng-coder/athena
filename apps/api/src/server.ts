@@ -1,19 +1,19 @@
 import { buildApp } from "./app.js";
+import { env } from "./config/env.js";
 
 const app = buildApp();
-
-const port = Number(process.env.PORT ?? 3333);
 
 async function start() {
   try {
     await app.listen({
-      port,
+      port: env.port,
       host: "0.0.0.0",
     });
 
-    console.log(`ATHENA API running on port ${port}`);
+    console.log(`ATHENA API running on port ${env.port}`);
   } catch (error) {
     app.log.error(error);
+
     process.exit(1);
   }
 }
