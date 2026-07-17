@@ -1,0 +1,25 @@
+# Dependências
+node_modules/
+
+# Arquivos de log
+*.log
+
+# Variáveis de ambiente
+.env
+.env.*
+
+# Build
+dist/
+build/
+coverage/
+
+# Cache
+.turbo/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/settings.json
+.idea/
