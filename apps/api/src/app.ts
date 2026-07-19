@@ -1,12 +1,23 @@
 import Fastify from "fastify";
-import { routes } from "./routes/index.js";
+import {
+  serializerCompiler,
+  validatorCompiler,
+} from "fastify-type-provider-zod";
 
-export function buildApp() {
+import { registerModules } from "./modules/index.js";
+import { registerPlugins } from "./plugins/index.js";
+
+export async function buildApp() {
   const app = Fastify({
     logger: true,
   });
 
-  app.register(routes);
+  app.setValidatorCompiler(validatorCompiler);
+  app.setSerializerCompiler(serializerCompiler);
+
+  await registerPlugins(app);
+
+  await registerModules(app);
 
   app.get("/", async () => {
     return {
