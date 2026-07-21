@@ -1,14 +1,8 @@
 import type {
   IndicatorSnapshot,
   MarketContext,
-  SignalReason,
+  StrategyResult,
 } from "@athena/core";
-
-export interface StrategyResult {
-  score: number;
-  maxScore: number;
-  reasons: SignalReason[];
-}
 
 export interface SignalStrategy {
   evaluate(

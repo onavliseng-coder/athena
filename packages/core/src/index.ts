@@ -1,5 +1,7 @@
 export * from "./candle.js";
 export * from "./signal.js";
+export * from "./StrategyResult.js";
+export * from "./StrategyEvaluation.js";
 export * from "./indicator-snapshot.js";
 
 export * from "./shared/UniqueId.js";
