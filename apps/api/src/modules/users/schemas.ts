@@ -6,6 +6,14 @@ export const CreateUserSchema = z.object({
   name: z.string().min(3, "O nome deve possuir pelo menos 3 caracteres"),
 });
 
+export const UpdateUserSchema = z.object({
+  email: z.email("E-mail inválido").optional(),
+  name: z
+    .string()
+    .min(3, "O nome deve possuir pelo menos 3 caracteres")
+    .optional(),
+});
+
 export const UserResponseSchema = z.object({
   id: z.uuid(),
   email: z.email(),
@@ -16,3 +24,4 @@ export const UserResponseSchema = z.object({
 
 export type CreateUserSchemaType = z.infer<typeof CreateUserSchema>;
 export type UserResponseSchemaType = z.infer<typeof UserResponseSchema>;
+export type UpdateUserSchemaType = z.infer<typeof UpdateUserSchema>;

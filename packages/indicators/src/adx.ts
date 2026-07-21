@@ -1,4 +1,4 @@
-import type { Candle } from "./types.js";
+import type { Candle } from "@athena/core";
 import { atr } from "./atr.js";
 import { validatePeriod } from "./utils.js";
 

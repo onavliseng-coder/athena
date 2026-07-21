@@ -39,4 +39,21 @@ export class UsersService {
 
     return user;
   }
+  async updateUser(id: string, data: Partial<CreateUserInput>) {
+    const user = await this.repository.findById(id);
+
+    if (!user) {
+      throw new NotFoundError("Usuário não encontrado.");
+    }
+
+    if (data.email && data.email !== user.email) {
+      const existingUser = await this.repository.findByEmail(data.email);
+
+      if (existingUser) {
+        throw new ConflictError("E-mail já cadastrado.");
+      }
+    }
+
+    return this.repository.update(id, data);
+  }
 }

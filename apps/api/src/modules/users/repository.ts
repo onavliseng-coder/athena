@@ -32,4 +32,13 @@ export class UsersRepository {
       },
     });
   }
+
+  async update(id: string, data: Partial<CreateUserInput>) {
+    return prisma.user.update({
+      where: {
+        id,
+      },
+      data,
+    });
+  }
 }

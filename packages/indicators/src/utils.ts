@@ -1,4 +1,4 @@
-import type { Candle } from "./types.js";
+import type { Candle } from "@athena/core";
 
 export function validatePeriod(candles: Candle[], period: number): void {
   if (!Number.isInteger(period)) {

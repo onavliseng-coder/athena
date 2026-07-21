@@ -10,3 +10,6 @@ const adapter = new PrismaPg({
 export const prisma = new PrismaClient({
   adapter,
 });
+
+// TEMPORÁRIO
+console.log(Object.keys(prisma));

@@ -2,6 +2,7 @@ import { UnauthorizedError } from "../../core/errors/unauthorized-error.js";
 import { JwtService } from "../../security/jwt.js";
 import { PasswordService } from "../../security/password.js";
 import { UsersRepository } from "../users/repository.js";
+import { SessionsRepository } from "../sessions/repository.js";
 
 import type { LoginSchemaType, RefreshTokenSchemaType } from "./schemas.js";
 
@@ -9,6 +10,8 @@ import type { LoginResponse, RefreshTokenResponse } from "./types.js";
 
 export class AuthService {
   private readonly usersRepository = new UsersRepository();
+
+  private readonly sessionsRepository = new SessionsRepository();
 
   private readonly passwordService = new PasswordService();
 
@@ -56,6 +59,12 @@ export class AuthService {
       type: "refresh",
     });
 
+    await this.sessionsRepository.create({
+      userId: user.id,
+      refreshToken,
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    });
+
     return {
       accessToken,
       refreshToken,
@@ -68,6 +77,14 @@ export class AuthService {
   }
   async refresh(_data: RefreshTokenSchemaType): Promise<RefreshTokenResponse> {
     const payload = this.jwtService.verify(_data.refreshToken);
+
+    const session = await this.sessionsRepository.findByRefreshToken(
+      _data.refreshToken,
+    );
+
+    if (!session) {
+      throw new UnauthorizedError("Sessão inválida.");
+    }
 
     if (payload.type !== "refresh") {
       throw new UnauthorizedError("Refresh Token inválido.");
@@ -87,5 +104,15 @@ export class AuthService {
     return {
       accessToken,
     };
+  }
+  async logout(refreshToken: string): Promise<void> {
+    const session =
+      await this.sessionsRepository.findByRefreshToken(refreshToken);
+
+    if (!session) {
+      throw new UnauthorizedError("Sessão inválida.");
+    }
+
+    await this.sessionsRepository.deleteByRefreshToken(refreshToken);
   }
 }

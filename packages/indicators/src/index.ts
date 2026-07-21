@@ -1,5 +1,3 @@
-export * from "./types.js";
-
 export * from "./utils.js";
 
 export * from "./sma.js";
@@ -9,3 +7,4 @@ export * from "./atr.js";
 export * from "./macd.js";
 export * from "./bollinger.js";
 export * from "./adx.js";
+export * from "./supertrend.js";

@@ -8,10 +8,36 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
+  id        String    @id @default(uuid())
+  email     String    @unique
   password  String
   name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  sessions  Session[]
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  refreshToken String   @unique
+  createdAt    DateTime @default(now())
+  expiresAt    DateTime
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+enum Market {
+  CRYPTO
+  STOCK
+  FOREX
+  INDEX
+  COMMODITY
+}
+
+model Asset {
+  id        String   @id @default(uuid())
+  symbol    String   @unique
+  name      String
+  market    Market
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

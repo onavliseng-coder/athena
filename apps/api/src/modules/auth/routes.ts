@@ -34,6 +34,23 @@ export async function authRoutes(app: FastifyInstance) {
       return service.refresh(data);
     },
   );
+  app.post(
+    "/auth/logout",
+    {
+      schema: {
+        body: refreshTokenSchema,
+      },
+    },
+    async (request, reply) => {
+      const data = request.body as typeof refreshTokenSchema._output;
+
+      await service.logout(data.refreshToken);
+
+      return reply.status(200).send({
+        message: "Logout realizado com sucesso.",
+      });
+    },
+  );
   app.get(
     "/auth/me",
     {

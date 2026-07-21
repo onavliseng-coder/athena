@@ -1,4 +1,4 @@
-import type { Candle } from "./types.js";
+import type { Candle } from "@athena/core";
 import { validatePeriod } from "./utils.js";
 
 export function ema(candles: Candle[], period: number): number[] {

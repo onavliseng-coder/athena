@@ -1,6 +1,10 @@
 import type { FastifyInstance } from "fastify";
 
-import { CreateUserSchema, UserResponseSchema } from "./schemas.js";
+import {
+  CreateUserSchema,
+  UpdateUserSchema,
+  UserResponseSchema,
+} from "./schemas.js";
 import { UsersService } from "./service.js";
 
 export async function usersRoutes(app: FastifyInstance) {
@@ -34,4 +38,21 @@ export async function usersRoutes(app: FastifyInstance) {
 
     return service.getUserById(id);
   });
+  app.patch(
+    "/users/:id",
+    {
+      schema: {
+        body: UpdateUserSchema,
+        response: {
+          200: UserResponseSchema,
+        },
+      },
+    },
+    async (request) => {
+      const { id } = request.params as { id: string };
+      const data = request.body as typeof UpdateUserSchema._output;
+
+      return service.updateUser(id, data);
+    },
+  );
 }
